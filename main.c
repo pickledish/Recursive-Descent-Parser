@@ -10,6 +10,7 @@ typedef struct list {
 
 int main()
 {
+	// Don't ask why "strang" needs to exist. It has to do with string literals and I don't get it either.
 	printf("Please enter a starting statement (q to quit): ");
 	char strang[] = "hi";
 	char* input = &strang[0];
@@ -21,7 +22,11 @@ int main()
 		char* t;
 		list* tokens = (list*) malloc(sizeof(list));
 		list* current = tokens;
+
+		// strtok is a function that breaks up a string into tokens based on the delimiter (here, " ")
 		t = strtok(input, " ");
+
+		// Keep breaking our input string into tokens and adding them to a linked list
 		while (t != NULL) {
 			printf("%s\n", t);
 			current->rest = (list*) malloc(sizeof(list));
@@ -29,6 +34,8 @@ int main()
 			current->item = t;
 			t = strtok(NULL, " ");
 		}
+
+		// Finally done! Here, we /do something/ with tokens, the list of our statement's tokens. Parse.
 
 	printf("Please enter another statement (q to quit): ");
 	scanf(" %[^\n]", input);
