@@ -1,0 +1,11 @@
+P 	->	SL $$
+SL	->	S SL  |  EPSILON
+S 	->	D | E
+D      ->    let id := E
+E 	->	T TT
+T 	->	F FT
+F 	->	( E )  |  id  |  literal
+TT	->	ao T TT  |  EPSILON
+FT	->	mo F FT  |  EPSILON
+ao	->	+  |  -
+mo	->	*  |  /
