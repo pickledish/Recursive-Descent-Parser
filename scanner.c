@@ -1,12 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
+#include "scanner.h"
 
-typedef struct list {
-	void* item;
-	struct list* rest;
-} list;
+int isNumber(char* s) {
+    if (*s == 0 || *s == 1 || *s == 2 || *s == 3 || *s == 4 || *s == 5 || *s == 6) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+token tokenize(char* t) {
+    if (strcmp(t, "+") == 0) { return t_add; }
+    else if (strcmp(t, "-") == 0) { return t_sub; }
+    else if (strcmp(t, "*") == 0) { return t_mul; }
+    else if (strcmp(t, "/") == 0) { return t_div; }
+    else if (strcmp(t, "(") == 0) { return t_lparen; }
+    else if (strcmp(t, ")") == 0) { return t_rparen; }
+    else if (strcmp(t, "$") == 0) { return t_eof; }
+    else if (strcmp(t, "let") == 0) { return t_let; }
+    else if (strcmp(t, ":=") == 0) { return t_gets; }
+    else { return t_literal; }; //(isNumber(t) ? t_literal : t_id); }
+}
 
 int main()
 {
@@ -29,16 +45,16 @@ int main()
 		// Keep breaking our input string into tokens and adding them to a linked list
 		while (t != NULL) {
 			printf("%s\n", t);
+            current->item = tokenize(t);
 			current->rest = (list*) malloc(sizeof(list));
 			current = current->rest;
-			current->item = t;
 			t = strtok(NULL, " ");
 		}
 
-		// Finally done! Here, we /do something/ with tokens, the list of our statement's tokens. Parse.
+		Program(tokens);
 
-	printf("Please enter another statement (q to quit): ");
-	scanf(" %[^\n]", input);
+		printf("Please enter another statement (q to quit): ");
+		scanf(" %[^\n]", input);
 	}
 
 	return 0;
