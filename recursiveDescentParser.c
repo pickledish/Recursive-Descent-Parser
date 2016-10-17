@@ -70,12 +70,8 @@ void recursivePrint(TREE subtree, int indentLevel) {
                 break;
             }
         }
-
-
     }
-
     printf(")");
-
 }
 
 void error() {

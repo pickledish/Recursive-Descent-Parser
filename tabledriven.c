@@ -59,3 +59,13 @@ token Productions[19][5] =  {{t_SL, t_eof, t_none},
 							 {t_div, t_none},
 };
 
+void ProgramTD(list* tokens) {
+
+	token x = t_SL;
+	token y = t_S;
+	token z = t_mo;
+	printf("%d\n", (int) x);
+	printf("%d\n", (int) y);
+	printf("%d\n", (int) z);
+
+}
