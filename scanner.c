@@ -47,6 +47,8 @@ int main()
 		list* tokens = (list*) malloc(sizeof(list));
 		list* current = tokens;
 
+        tokens->type = NULL;
+
 		// strtok is a function that breaks up a string into tokens based on the delimiter (here, " ")
 		t = strtok(input, " ");
 
@@ -59,6 +61,8 @@ int main()
 			current = current->rest;
 			t = strtok(NULL, " ");
 		}
+
+        current->type = NULL;
 
 		Program(tokens);
 
