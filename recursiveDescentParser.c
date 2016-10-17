@@ -44,6 +44,10 @@ void printTree(TREE result) {
 
 void recursivePrint(TREE subtree, int indentLevel) {
 
+    if(subtree == NULL) {
+        return;
+    }
+
     printf("\n");
 
     for(int i = 0; i < indentLevel; i++) {
@@ -55,11 +59,16 @@ void recursivePrint(TREE subtree, int indentLevel) {
     if(subtree->leftmostChild != NULL) {
         recursivePrint(subtree->leftmostChild, indentLevel+1);
 
-        TREE sibiling = subtree->leftmostChild->rightSibling;
+        TREE sibling = subtree->leftmostChild->rightSibling;
 
-        while(sibiling != NULL) {
-            recursivePrint(subtree->leftmostChild, indentLevel+1);
-            sibiling = sibiling->rightSibling;
+        while(sibling != NULL) {
+            recursivePrint(sibling, indentLevel+1);
+            if(sibling->rightSibling != NULL) {
+                sibling = sibling->rightSibling;
+            }
+            else {
+                break;
+            }
         }
 
 
@@ -105,7 +114,7 @@ TREE statementList() {
             match(t_newline);
             t2 = statementList();
 
-            TREE returner = (TREE) malloc(sizeof(TREE));
+            (TREE) malloc(sizeof(TREE));
             returner->value = "SL";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
