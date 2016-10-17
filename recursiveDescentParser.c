@@ -73,12 +73,8 @@ void recursivePrint(TREE subtree, int indentLevel) {
                 break;
             }
         }
-
-
     }
-
     printf(")");
-
 }
 
 void error() {
@@ -127,15 +123,14 @@ TREE statementList() {
             t1 = statement();
             //match(t_newline);
             t2 = statementList();
+            t1->rightSibling = t2;
             returner->value = "SL";
             returner->leftmostChild = t1;
-            t1->rightSibling = t2;
             return returner;
         case (t_eof) : break;
         default:
             printf("ERROR! : statementList()");
             error();
-
     }
     return NULL;
 }
@@ -167,7 +162,6 @@ TREE statement() {
         case (t_lparen):
         case (t_id):
         case (t_literal):
-
             t1 = expression();
             returner->value = "S";
             returner->leftmostChild = t1;
@@ -384,6 +378,7 @@ TREE addOperation() {
 
     return NULL;
 }
+
 TREE factor(){
     if (debug) {printf("in factor()\n");}
     TREE returner = (TREE) malloc(sizeof(TREE));
@@ -408,36 +403,25 @@ TREE factor(){
             t3 = match(t_rparen);
             t1->rightSibling = t2;
             t2->rightSibling = t3;
-<<<<<<< HEAD
             returner->value = "F";
             returner->leftmostChild = t1;
             returner->rightSibling = NULL;
-            break;
-=======
             return returner;
->>>>>>> origin/master
 
         case (t_id):
             t1 = match(t_id);
             returner->value = "ID";
             returner->leftmostChild = t1;
-<<<<<<< HEAD
             returner->rightSibling = NULL;
-            break;
-=======
             return returner;
->>>>>>> origin/master
+
 
         case (t_literal):
             t1 = match(t_literal);
             returner->value = "F";
             returner->leftmostChild = t1;
             returner->rightSibling = NULL;
-<<<<<<< HEAD
-            break;
-=======
             return returner;
->>>>>>> origin/master
 
         default:
             printf("ERROR! factor()");
