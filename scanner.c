@@ -54,7 +54,7 @@ int main()
 
 		// Keep breaking our input string into tokens and adding them to a linked list
 		while (t != NULL) {
-			printf("%s\n", t);
+			//printf("%s\n", t);
             current->type = tokenize(t);
             current->value = t;
 			current->rest = (list*) malloc(sizeof(list));
@@ -66,7 +66,7 @@ int main()
 
 		Program(tokens);
 
-		printf("\n\nPlease enter another statement (q to quit): ");
+		input: printf("\n\nPlease enter another statement (q to quit): ");
 		scanf(" %[^\n]", input);
 	}
 

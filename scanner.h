@@ -30,6 +30,8 @@ struct NODE {
 
 TREE Program(list* tokens);
 
+char* string_from_token(token t);
+
 
 
 #endif //PROJECT_02_MAIN_H
