@@ -5,7 +5,9 @@
 #ifndef PROJECT_02_MAIN_H
 #define PROJECT_02_MAIN_H
 
-typedef enum {t_none, t_id, t_literal, t_gets, t_add, t_sub, t_mul, t_div, t_lparen, t_rparen, t_eof, t_let, t_newline} token;
+typedef enum {	t_none, t_id, t_literal, t_gets, t_add, t_sub, t_mul, t_div, 
+              	t_lparen, t_rparen, t_eof, t_let, t_newline,
+              	t_SL, t_S, t_D, t_E, t_T, t_F, t_TT, t_FT, t_ao, t_mo} token;
 
 typedef struct list {
     token type;
