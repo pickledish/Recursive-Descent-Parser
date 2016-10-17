@@ -9,7 +9,7 @@
 
 list* tokens;
 
-int debug = 0;
+int debug = 1;
 
 TREE multiplyOperation();
 TREE declaration();
@@ -178,9 +178,9 @@ TREE expression() {
         case (t_literal):
             t1 = term();
             t2 = termTail();
+            t1->rightSibling = t2;
             returner->value = "E";
             returner->leftmostChild = t1;
-            t1->rightSibling = t2;
             break;
         case (t_eof) : break;
         default:
@@ -208,9 +208,9 @@ TREE term(){
         case (t_literal):
             t1 = factor();
             t2 = factorTail();
+            t1->rightSibling = t2;
             returner->value = "T";
             returner->leftmostChild = t1;
-            t1->rightSibling = t2;
             break;
         case (t_eof) : break;
         default:
@@ -276,10 +276,14 @@ TREE termTail(){
             t2 = term();
             t3 = termTail();
 
+            t1->rightSibling->value = t2->value;
+            t1->rightSibling->rightSibling = t2->rightSibling;
+            t1->rightSibling->leftmostChild = t2->leftmostChild;
+
+            //t1->rightSibling = t2;
+            t2->rightSibling = t3;
             returner->value = "TT";
             returner->leftmostChild = t1;
-            t1->rightSibling = t2;
-            t2->rightSibling = t3;
 
             break;
 
@@ -325,7 +329,7 @@ TREE addOperation() {
             error();
     }
 
-    return t1;
+    return returner;
 }
 TREE factor(){
     if (debug) {printf("in factor()\n");}
@@ -363,7 +367,7 @@ TREE factor(){
             printf("ERROR! factor()");
             error();
     }
-    return t1;
+    return returner;
 }
 
 //TREE number(){
@@ -400,7 +404,7 @@ TREE multiplyOperation(){
             error();
     }
 
-    return t1;
+    return returner;
 }
 
 TREE declaration(){
