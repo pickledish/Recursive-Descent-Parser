@@ -8,14 +8,15 @@
 typedef enum {t_id, t_literal, t_gets, t_add, t_sub, t_mul, t_div, t_lparen, t_rparen, t_eof, t_let, t_newline} token;
 
 typedef struct list {
-    token item;
+    token type;
+    char* value;
     struct list* rest;
 } list;
 
 typedef struct NODE* TREE;
 
 struct NODE {
-    void* item;
+    char* value;
     TREE leftmostChild, rightSibling;
 };
 

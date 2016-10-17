@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "scanner.h"
 
 int isNumber(char* s) {
-    if (*s == 0 || *s == 1 || *s == 2 || *s == 3 || *s == 4 || *s == 5 || *s == 6) {
+    if (*s == 0 || *s == 1 || s[0] == 2 || s[0] == 3 || s[0] == 4 || s[0] == 5 || s[0] == 6) {
         return 1;
     } else {
         return 0;
@@ -21,7 +22,14 @@ token tokenize(char* t) {
     else if (strcmp(t, "$") == 0) { return t_eof; }
     else if (strcmp(t, "let") == 0) { return t_let; }
     else if (strcmp(t, ":=") == 0) { return t_gets; }
-    else { return t_literal; }; //(isNumber(t) ? t_literal : t_id); }
+    else {
+        // printf(" Hello %d\n", isalpha(t[0]));
+        if (isnumber(t[0]) != 0) {
+            return t_literal;
+        } else {
+            return t_id;
+        }
+    }
 }
 
 int main()
@@ -45,7 +53,8 @@ int main()
 		// Keep breaking our input string into tokens and adding them to a linked list
 		while (t != NULL) {
 			printf("%s\n", t);
-            current->item = tokenize(t);
+            current->type = tokenize(t);
+            current->value = t;
 			current->rest = (list*) malloc(sizeof(list));
 			current = current->rest;
 			t = strtok(NULL, " ");

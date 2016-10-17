@@ -33,16 +33,16 @@ TREE Program(list* tokens2) {
 }
 
 void error() {
-    while ( (token) tokens->item != t_newline ) {
+    while ( (token) tokens->type != t_newline ) {
         tokens = tokens->rest;
     }
 }
 
 TREE match(token expected){
-    if (expected == tokens->item) {
-        tokens = tokens->rest;
+    if (expected == tokens->type) {
         TREE m = (TREE) malloc(sizeof(TREE));
-        m->item = expected;
+        m->value = tokens->value;
+        tokens = tokens->rest;
         return m;
     } else {
         // Throw Exception
@@ -54,7 +54,7 @@ TREE statementList() {
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_lparen):
         case (t_id):
@@ -65,7 +65,7 @@ TREE statementList() {
             t2 = statementList();
 
             TREE returner = (TREE) malloc(sizeof(TREE));
-            returner->item = "SL";
+            returner->value = "SL";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             break;
@@ -84,11 +84,11 @@ TREE statement() {
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t0, t1;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_let):
             t0 = declaration();
-            returner->item = "S";
+            returner->value = "S";
             returner->leftmostChild = t0;
             break;
         case (t_lparen):
@@ -96,7 +96,7 @@ TREE statement() {
         case (t_literal):
 
             t1 = expression();
-            returner->item = "S";
+            returner->value = "S";
             returner->leftmostChild = t1;
             break;
         case (t_eof) : break;
@@ -114,14 +114,14 @@ TREE expression() {
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_lparen):
         case (t_id):
         case (t_literal):
             t1 = term();
             t2 = termTail();
-            returner->item = "E";
+            returner->value = "E";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             break;
@@ -140,14 +140,14 @@ TREE term(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_lparen):
         case (t_id):
         case (t_literal):
             t1 = factor();
             t2 = factorTail();
-            returner->item = "T";
+            returner->value = "T";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             break;
@@ -164,19 +164,29 @@ TREE factorTail(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2, t3;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_mul):
         case (t_div):
             t1 = multiplyOperation();
             t2 = factor();
             t3 = factorTail();
-            returner->item = "FT";
+            returner->value = "FT";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             t2->rightSibling = t3;
             break;
-        case (t_eof) : break;
+
+        case (t_eof) :
+        case (t_add):
+        case (t_sub):
+        case (t_rparen):
+        case (t_let):
+        case (t_lparen):
+        case (t_id):
+        case (t_literal):
+            break;
+
         default:
             printf("ERROR! : factorTail()");
             error();
@@ -190,7 +200,7 @@ TREE termTail(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2, t3;
 
-    switch((token) (tokens->item)) {
+    switch((token) (tokens->type)) {
 
         case (t_add):
         case (t_sub):
@@ -198,15 +208,22 @@ TREE termTail(){
             t2 = term();
             t3 = termTail();
 
-            returner->item = "TT";
+            returner->value = "TT";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             t2->rightSibling = t3;
 
             break;
-        case (t_eof) : break;
+
+        case (t_eof):
+        case (t_rparen):
+        case (t_let):
+        case (t_lparen):
+        case (t_id):
+        case (t_literal):
+            break;
         default:
-            printf("ERROR! : factorTail()");
+            printf("ERROR! : termTail()");
             error();
 
     }
@@ -217,17 +234,17 @@ TREE addOperation() {
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1;
 
-    switch ((token) (tokens->item)) {
+    switch ((token) (tokens->type)) {
 
         case (t_add):
             t1 = match(t_add);
-            returner->item = "A";
+            returner->value = "A";
             returner->leftmostChild = t1;
             break;
 
         case (t_sub):
             t1 = match(t_sub);
-            returner->item = "A";
+            returner->value = "A";
             returner->leftmostChild = t1;
             break;
 
@@ -242,13 +259,13 @@ TREE factor(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2, t3;
 
-    switch ((token) (tokens->item)) {
+    switch ((token) (tokens->type)) {
 
         case (t_lparen):
             t1 = match(t_lparen);
             t2 = expression();
             t3 = match(t_rparen);
-            returner->item = "F";
+            returner->value = "F";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             t2->rightSibling = t3;
@@ -256,13 +273,13 @@ TREE factor(){
 
         case (t_id):
             t1 = match(t_id);
-            returner->item = "ID";
+            returner->value = "ID";
             returner->leftmostChild = t1;
             break;
 
         case (t_literal):
             t1 = match(t_literal);
-            returner->item = "N";
+            returner->value = "N";
             returner->leftmostChild = t1;
             break;
 
@@ -284,16 +301,16 @@ TREE factor(){
 TREE multiplyOperation(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1;
-    switch ((token) (tokens->item)) {
+    switch ((token) (tokens->type)) {
         case (t_mul):
             t1 = match(t_mul);
-            returner->item = "M";
+            returner->value = "M";
             returner->leftmostChild = t1;
             break;
 
         case (t_div):
             t1 = match(t_div);
-            returner->item = "M";
+            returner->value = "M";
             returner->leftmostChild = t1;
             break;
 
@@ -308,13 +325,13 @@ TREE multiplyOperation(){
 TREE declaration(){
     TREE returner = (TREE) malloc(sizeof(TREE));
     TREE t1, t2, t3, t4;
-    switch ((token) (tokens->item)) {
+    switch ((token) (tokens->type)) {
         case (t_let):
             t1 = match(t_let);
             t2 = match(t_id);
             t3 = match(t_gets);
             t4 = expression();
-            returner->item = "D";
+            returner->value = "D";
             returner->leftmostChild = t1;
             t3->rightSibling = t4;
             t2->rightSibling = t3;
