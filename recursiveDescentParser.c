@@ -87,12 +87,14 @@ TREE match(token expected){
     if (expected == tokens->type) {
         if (debug) {printf("in match()\n");}
         TREE m = (TREE) malloc(sizeof(TREE));
+        m->value = (char*) malloc(sizeof(char));
         m->rightSibling = NULL;
         m->leftmostChild = NULL;
         char* temp = (char*) malloc(sizeof(char));
         strcpy(temp, tokens->value);
         m->value = temp;
         tokens = tokens->rest;
+        m->rightSibling = NULL;
         return m;
     } else {
         return NULL;
@@ -430,13 +432,6 @@ TREE factor(){
     return NULL;
 }
 
-//TREE number(){
-//    char* num = getNum(tokens);
-//    if(isNumber(num)){
-//        // match the number
-//        //make a tree
-//    }
-//}
 
 TREE multiplyOperation(){
     if (debug) {printf("in multiplyOperation()\n");}
@@ -458,7 +453,6 @@ TREE multiplyOperation(){
             returner->value = "M";
             returner->leftmostChild = t1;
             returner->rightSibling = NULL;
-            break;
             return returner;
 
         case (t_div):
@@ -466,7 +460,6 @@ TREE multiplyOperation(){
             returner->value = "M";
             returner->leftmostChild = t1;
             returner->rightSibling = NULL;
-            break;
             return returner;
 
         default:
