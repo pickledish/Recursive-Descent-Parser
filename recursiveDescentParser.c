@@ -268,6 +268,9 @@ TREE termTail(){
     switch((token) (tokens->type)) {
 
         case (t_none):
+            returner->value = "TT";
+            returner->leftmostChild = NULL;
+            returner->rightSibling = NULL;
             return returner;
 
         case (t_add):
@@ -276,10 +279,10 @@ TREE termTail(){
             t2 = term();
             t3 = termTail();
 
+            t2->rightSibling = t3;
+            t1->rightSibling = t2;
             returner->value = "TT";
             returner->leftmostChild = t1;
-            t1->rightSibling = t2;
-            t2->rightSibling = t3;
             break;
 
         case (t_eof):
