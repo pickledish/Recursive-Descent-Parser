@@ -15,6 +15,12 @@ typedef struct list {
     struct list* rest;
 } list;
 
+typedef struct stack {
+	token type;
+    char* value;
+    struct stack* prev;
+} stack;
+
 typedef struct NODE* TREE;
 
 struct NODE {
