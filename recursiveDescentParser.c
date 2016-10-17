@@ -298,7 +298,6 @@ TREE termTail(){
         default:
             printf("ERROR! : termTail()");
             error();
-
     }
 
 }
@@ -346,22 +345,25 @@ TREE factor(){
             t1 = match(t_lparen);
             t2 = expression();
             t3 = match(t_rparen);
-            returner->value = "F";
-            returner->leftmostChild = t1;
             t1->rightSibling = t2;
             t2->rightSibling = t3;
+            returner->value = "F";
+            returner->leftmostChild = t1;
+            returner->rightSibling = NULL;
             break;
 
         case (t_id):
             t1 = match(t_id);
             returner->value = "ID";
             returner->leftmostChild = t1;
+            returner->rightSibling = NULL;
             break;
 
         case (t_literal):
             t1 = match(t_literal);
             returner->value = "N";
             returner->leftmostChild = t1;
+            returner->rightSibling = NULL;
             break;
 
         default:
@@ -392,12 +394,14 @@ TREE multiplyOperation(){
             t1 = match(t_mul);
             returner->value = "M";
             returner->leftmostChild = t1;
+            returner->rightSibling = NULL;
             break;
 
         case (t_div):
             t1 = match(t_div);
             returner->value = "M";
             returner->leftmostChild = t1;
+            returner->rightSibling = NULL;
             break;
 
         default:
