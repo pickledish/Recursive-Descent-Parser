@@ -9,11 +9,10 @@
 
 list* tokens;
 
-int debug = 1;
+int debug = 0;
 
 TREE multiplyOperation();
 TREE declaration();
-TREE printTree();
 TREE statementList();
 TREE statement();
 TREE expression();
@@ -23,6 +22,9 @@ TREE factor();
 TREE factorTail();
 TREE addOperation();
 
+void recursivePrint(TREE subtree, int indentLevel);
+void printTree(TREE result);
+
 TREE Program(list* tokens2) {
 
     tokens = tokens2;
@@ -30,8 +32,41 @@ TREE Program(list* tokens2) {
     TREE result = statementList();
 
     if(result != NULL) {
-        //printTree(result);
+        printTree(result);
     }
+}
+
+void printTree(TREE result) {
+
+    recursivePrint(result, 0);
+
+}
+
+void recursivePrint(TREE subtree, int indentLevel) {
+
+    printf("\n");
+
+    for(int i = 0; i < indentLevel; i++) {
+        printf("\t");
+    }
+
+    printf("(%s", subtree->value);
+
+    if(subtree->leftmostChild != NULL) {
+        recursivePrint(subtree->leftmostChild, indentLevel+1);
+
+        TREE sibiling = subtree->leftmostChild->rightSibling;
+
+        while(sibiling != NULL) {
+            recursivePrint(subtree->leftmostChild, indentLevel+1);
+            sibiling = sibiling->rightSibling;
+        }
+
+
+    }
+
+    printf(")");
+
 }
 
 void error() {
