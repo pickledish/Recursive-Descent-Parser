@@ -1,5 +1,5 @@
 //
-// Created by Manan hora on 10/17/16.
+// Created by Brandon Willett on 10/17/16.
 //
 
 #include <stdio.h>
@@ -54,7 +54,37 @@ int isProduction(token t) {
     }
 }
 
-list* tokens;
+list* currentToken;
+stack* currentStack;
+
+
+TREE match(token expected) {
+
+    if (expected == currentToken->type) {
+
+        TREE m = (TREE) malloc(sizeof(TREE));
+        m->value = (char*) malloc(sizeof(char));
+        m->rightSibling = NULL;
+        m->leftmostChild = NULL;
+        char* temp = (char*) malloc(sizeof(char));
+        strcpy(temp, currentToken->value);
+        m->value = temp;
+        m->rightSibling = NULL;
+
+        currentToken = currentToken->rest;
+        currentStack = currentStack->prev;
+
+        return m;
+
+    } else {
+
+        printf("Error: Input token %s, but expected %s", currentToken->value, string_from_token(expected));
+
+    }
+
+}
+
+
                       //   N/a     lit      +       *      (       $$      \n
                       //       id      :=       -       /       )      let
 int parseTable[10][13] = {{-1,  1,  1, -1, -1, -1, -1, -1,  1, -1,  2,  1, -1} , // SL
@@ -93,25 +123,30 @@ token Productions[19][5] =  {{t_eof, t_SL},
 
 void ProgramTD(list* tokens) {
 
-    list* currentToken = tokens;
+    currentToken = tokens;
+    currentStack = (stack*) malloc(sizeof(stack));
 
     stack* tokenStack = (stack*) malloc(sizeof(stack));
     tokenStack->type = t_none;
-    stack* currentStack = (stack*) malloc(sizeof(stack));
     currentStack->prev = tokenStack;
     currentStack->type = t_SL;
 
+    // While the stack is not empty and there is input to be consumed
     while ((currentToken->type != NULL) && (currentStack->type != t_none)) {
 
+        // If the element at the top of the stack is a nonterminal
         if (isProduction(currentStack->type)) {
 
+            // Determine which production the system should predict
             token currentNonT = currentStack->type;
             currentStack = currentStack->prev;
-            int prod = parseTable[((int) currentNonT) - 13][(int) currentToken->type];
+            int prod = parseTable[((int) currentNonT) - 13][(int) currentToken->type]; // 13 is offset
 
+            // Look it up in the table, and find what it expands into based on that production
             token expansion[5] = {0, 0, 0, 0, 0};
             memcpy(expansion, Productions[prod], 5*sizeof(int));
 
+            // For each element in that expansion (they all end with t_none), push it onto the stack
             int i = 0;
             token temp = expansion[0];
             while (temp != t_none) {
@@ -123,20 +158,16 @@ void ProgramTD(list* tokens) {
                 temp = expansion[i];
             }
 
+        // Otherwise, it's a terminal! Yay! Pop it off the stack, match it, and keep going
         } else {
 
             if (currentStack->type == currentToken->type) {
 
-                printf("%s\n", string_from_token(currentStack->type));
-                currentStack = currentStack->prev;
-                currentToken = currentToken->rest;
+                TREE leaf = match(currentStack->type);
 
             }
-
         }
-
     }
-
 }
 
 
