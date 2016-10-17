@@ -276,15 +276,10 @@ TREE termTail(){
             t2 = term();
             t3 = termTail();
 
-            t1->rightSibling->value = t2->value;
-            t1->rightSibling->rightSibling = t2->rightSibling;
-            t1->rightSibling->leftmostChild = t2->leftmostChild;
-
-            //t1->rightSibling = t2;
-            t2->rightSibling = t3;
             returner->value = "TT";
             returner->leftmostChild = t1;
-
+            t1->rightSibling = t2;
+            t2->rightSibling = t3;
             break;
 
         case (t_eof):
