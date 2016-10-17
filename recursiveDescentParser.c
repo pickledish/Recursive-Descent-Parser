@@ -9,7 +9,7 @@
 
 list* tokens;
 
-int debug = 1;
+int debug = 0;
 
 TREE multiplyOperation();
 TREE declaration();
@@ -25,13 +25,17 @@ TREE addOperation();
 void recursivePrint(TREE subtree, int indentLevel);
 void printTree(TREE result);
 
+int failure = 0;
+
 TREE Program(list* tokens2) {
+
+    failure = 0;
 
     tokens = tokens2;
 
     TREE result = statementList();
 
-    if(result != NULL) {
+    if(result != NULL && !failure) {
         printTree(result);
     }
 
@@ -97,6 +101,8 @@ TREE match(token expected){
         m->rightSibling = NULL;
         return m;
     } else {
+        printf("\nFAILURE: EXPECTED TOKEN %s BUT RECIEVED TOKEN %s", string_from_token(tokens->type), string_from_token(expected));
+        failure = 1;
         return NULL;
     }
 }
