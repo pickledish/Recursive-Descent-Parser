@@ -98,12 +98,17 @@ void ProgramTD(list* tokens) {
 	currentStack->prev = tokenStack;
 	currentStack->type = t_SL;
 
+	// While the stack is not empty and there is input to be consumed
 	while (((currentToken->rest)->type != NULL) && (currentStack->type != t_none)) {
 
+		// If the element at the top of the stack is a nonterminal
 		if (isProduction(currentStack->type)) {
 
+			// Look it up in the table, and find what it expands into
 			token expansion[5]; 
 			memcpy(expansion, Productions[((int) currentStack->type) - 13], 5);
+
+			// For each element in that expansion (they all end with t_none), push it onto the stack
 			int i = 0;
 			token temp = expansion[0];
 			while (temp != t_none) {
@@ -115,6 +120,7 @@ void ProgramTD(list* tokens) {
 				temp = expansion[i];
 			}
 
+		// Otherwise, it's a terminal! Yay! Pop it off the stack, match it, and keep going
 		} else {
 
 			if (currentStack->type == currentToken->type) {
@@ -124,11 +130,8 @@ void ProgramTD(list* tokens) {
 				currentToken = currentToken->rest;
 
 			}
-
 		}
-
 	}
-
 }
 
 
