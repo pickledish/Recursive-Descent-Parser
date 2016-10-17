@@ -330,6 +330,7 @@ TREE termTail(){
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
             t2->rightSibling = t3;
+            returner->rightSibling = NULL;
             return returner;
 
         case (t_eof):
