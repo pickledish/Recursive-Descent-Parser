@@ -72,3 +72,16 @@ int main()
 
 	return 0;
 }
+
+int evaluateExpression(char* exp){
+    while(*exp!=NULL){
+        char a = *exp;
+        if(a!=" "){
+            //a is either a literal, a symbol or a bracket
+            switch(a){
+                //case (*):
+
+            }
+        }
+    }
+}

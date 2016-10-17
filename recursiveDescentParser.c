@@ -91,9 +91,11 @@ TREE match(token expected){
     if (expected == tokens->type) {
         if (debug) {printf("in match()\n");}
         TREE m = (TREE) malloc(sizeof(TREE));
-        m->value = tokens->value;
         m->rightSibling = NULL;
         m->leftmostChild = NULL;
+        char* temp = (char*) malloc(sizeof(char));
+        strcpy(temp, tokens->value);
+        m->value = temp;
         tokens = tokens->rest;
         return m;
     } else {
@@ -123,9 +125,8 @@ TREE statementList() {
         case (t_literal):
         case (t_let):
             t1 = statement();
-            match(t_newline);
+            //match(t_newline);
             t2 = statementList();
-
             returner->value = "SL";
             returner->leftmostChild = t1;
             t1->rightSibling = t2;
@@ -245,6 +246,7 @@ TREE term(){
             returner->leftmostChild = t1;
             returner->rightSibling = NULL;
             return returner;
+
         case (t_eof) : break;
         default:
             printf("ERROR! : term()");
