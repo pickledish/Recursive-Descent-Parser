@@ -5,8 +5,8 @@
       <sourceFolder url="file://$MODULE_DIR$/scanner.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/scanner.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/README.md" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/table_Driven.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/recursiveDescentParser.c" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/tabledriven.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/evaluateParseTree.c" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/productions.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
