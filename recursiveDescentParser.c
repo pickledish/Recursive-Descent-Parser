@@ -285,7 +285,8 @@ TREE termTail(){
             t1->rightSibling = t2;
             returner->value = "TT";
             returner->leftmostChild = t1;
-            break;
+            returner->rightSibling = NULL;
+            return returner;
 
         case (t_eof):
         case (t_rparen):
