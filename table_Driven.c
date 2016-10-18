@@ -131,8 +131,17 @@ void ProgramTD(list* tokens) {
     currentStack->prev = tokenStack;
     currentStack->type = t_SL;
 
+    TREE parseTree = (TREE) malloc(sizeof(TREE));
+    parseTree->value = t_SL;
+    parseTree->rightSibling = NULL;
+    parseTree->leftmostChild = NULL;
+
+
+
     // While the stack is not empty and there is input to be consumed
     while ((currentToken->type != NULL) && (currentStack->type != t_none)) {
+
+        TREE traversalTree = parseTree;
 
         // If the element at the top of the stack is a nonterminal
         if (isProduction(currentStack->type)) {
@@ -142,9 +151,17 @@ void ProgramTD(list* tokens) {
             currentStack = currentStack->prev;
             int prod = parseTable[((int) currentNonT) - 13][(int) currentToken->type]; // 13 is offset
 
+            //Traversal Tree Lookup
+
+            traversalTree = findNode(traversalTree, currentNonT);
+
+
+
             // Look it up in the table, and find what it expands into based on that production
             token expansion[5] = {0, 0, 0, 0, 0};
             memcpy(expansion, Productions[prod], 5*sizeof(int));
+
+
 
             // For each element in that expansion (they all end with t_none), push it onto the stack
             int i = 0;
@@ -178,7 +195,35 @@ void ProgramTD(list* tokens) {
     }
 }
 
+TREE findNode(TREE root, token desired) {
 
+    if(root->value == desired && root->leftmostChild == NULL) {
+        return root;
+    }
+
+    if(root == NULL) {
+        return NULL;
+    }
+
+    TREE m = findNode(root->leftmostChild, desired);
+
+    if(m != NULL) {
+        return m;
+    }
+    else {
+        m = findNode(root->rightSibling, desired);
+
+        if(m != NULL) {
+            return m;
+        }
+        else {
+            return NULL;
+        }
+    }
+
+
+
+}
 
 
 

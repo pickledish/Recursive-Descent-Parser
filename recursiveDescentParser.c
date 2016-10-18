@@ -65,8 +65,6 @@ TREE Program(list* tokens2) {
     tokens = tokens2;
 
     TREE result = statementList();
-    char* exp = getTreeExpression(result, "");
-    printf("%s", exp);
 
     if(result != NULL && !failure) {
         printTree(result);
