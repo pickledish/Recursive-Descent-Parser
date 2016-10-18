@@ -32,10 +32,10 @@ TREE Program(list* tokens);
 
 char* string_from_token(token t);
 
-void ProgramTD(list* tokens);
+TREE ProgramTD(list* tokens);
 
 
 TREE findNode(TREE root, token desired);
-
+void printTree(TREE result);
 
 #endif //PROJECT_02_MAIN_H

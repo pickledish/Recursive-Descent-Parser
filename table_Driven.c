@@ -9,16 +9,16 @@
 
 char* string_from_token(token t) {
     switch(t) {
-        case (t_SL): return "t_SL";
-        case (t_S): return "t_S";
-        case (t_D): return "t_D";
-        case (t_E): return "t_E";
-        case (t_T): return "t_T";
-        case (t_F): return "t_F";
-        case (t_TT): return "t_TT";
-        case (t_FT): return "t_FT";
-        case (t_ao): return "t_ao";
-        case (t_mo): return "t_mo";
+        case (t_SL): return "SL";
+        case (t_S): return "S";
+        case (t_D): return "D";
+        case (t_E): return "E";
+        case (t_T): return "T";
+        case (t_F): return "F";
+        case (t_TT): return "TT";
+        case (t_FT): return "FT";
+        case (t_ao): return "ao";
+        case (t_mo): return "mo";
         case (t_none): return "t_none";
         case (t_id): return "t_id";
         case (t_literal): return "t_literal";
@@ -121,7 +121,7 @@ token Productions[19][5] =  {{t_eof, t_SL},
                              {t_div},
 };
 
-void ProgramTD(list* tokens) {
+TREE ProgramTD(list* tokens) {
 
     currentToken = tokens;
     currentStack = (stack*) malloc(sizeof(stack));
@@ -132,16 +132,17 @@ void ProgramTD(list* tokens) {
     currentStack->type = t_SL;
 
     TREE parseTree = (TREE) malloc(sizeof(TREE));
-    parseTree->value = t_SL;
+    parseTree->value = (char*) malloc(sizeof(char));
+    parseTree->value = string_from_token(t_SL);
     parseTree->rightSibling = NULL;
     parseTree->leftmostChild = NULL;
 
-
+    TREE traversalTree = parseTree;
 
     // While the stack is not empty and there is input to be consumed
     while ((currentToken->type != NULL) && (currentStack->type != t_none)) {
 
-        TREE traversalTree = parseTree;
+        traversalTree = parseTree;
 
         // If the element at the top of the stack is a nonterminal
         if (isProduction(currentStack->type)) {
@@ -161,20 +162,33 @@ void ProgramTD(list* tokens) {
             token expansion[5] = {0, 0, 0, 0, 0};
             memcpy(expansion, Productions[prod], 5*sizeof(int));
 
-            printf("%s ( \n", string_from_token(currentNonT));
-
+            TREE rightSiblings = NULL;
+            TREE n;
 
             // For each element in that expansion (they all end with t_none), push it onto the stack
             int i = 0;
             token temp = expansion[0];
             while (temp != t_none) {
 
-                TREE node = (TREE) malloc(sizeof(TREE));
                 char* name = (char*) malloc(sizeof(char));
                 strcpy(name, string_from_token(temp));
-                node->value = name;
 
-                
+                if(rightSiblings == NULL) {
+                    rightSiblings = (TREE) malloc(sizeof(TREE));
+                    rightSiblings->value = (char*) malloc(sizeof(char));
+                    rightSiblings->value = name;
+                    rightSiblings->leftmostChild = NULL;
+                    rightSiblings->rightSibling = NULL;
+                }
+                else {
+                    n = (TREE) malloc(sizeof(TREE));
+                    n->leftmostChild = NULL;
+                    n->rightSibling = NULL;
+                    n->value = (char*) malloc(sizeof(char));
+                    n->value = name;
+                    n->rightSibling = rightSiblings;
+                    rightSiblings = n;
+                }
 
                 stack* pushed = (stack*) malloc(sizeof(stack));
                 pushed->type = temp;
@@ -184,27 +198,39 @@ void ProgramTD(list* tokens) {
                 temp = expansion[i];
             }
 
+            traversalTree->leftmostChild = rightSiblings;
+
         // Otherwise, it's a terminal! Yay! Pop it off the stack, match it, and keep going
         } else {
 
             if (currentStack->type == currentToken->type) {
 
+                traversalTree = findNode(traversalTree, currentStack->type);
+
                 TREE leaf = matchTD(currentStack->type);
+
+                traversalTree->leftmostChild = leaf;
 
             }
         }
     }
+
+    printTree(parseTree);
+
+    return parseTree;
 }
 
 TREE findNode(TREE root, token desired) {
 
-    if(root->value == desired && root->leftmostChild == NULL) {
-        return root;
-    }
-
     if(root == NULL) {
         return NULL;
     }
+
+    if(!strcmp(root->value, string_from_token(desired)) && root->leftmostChild == NULL) {
+        return root;
+    }
+
+
 
     TREE m = findNode(root->leftmostChild, desired);
 
