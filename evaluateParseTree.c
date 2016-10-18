@@ -56,9 +56,71 @@ int evaluateExpression(char* exp){
 
 
 
-//int evaluateParseTree(TREE tree){
-//    char* exp = "";
-//    exp = getTreeExpression(tree, exp);
-//    int result = evaluateExpression(exp);
-//    return result;
-//}
+int evaluateParseTree(TREE tree){
+    if(tree->value == "E"){
+        int leftHalf = evaluateParseTree(tree->leftmostChild);
+        int rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+        int result = leftHalf + rightHalf;
+        return result;
+    }
+    if(tree->value == "T"){
+        if(tree->leftmostChild!=NULL){
+            int leftHalf = evaluateParseTree(tree->leftmostChild);
+            int rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+            int result = leftHalf*rightHalf;
+        }
+    }
+    if(tree->value == "FT"){
+        int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+        int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

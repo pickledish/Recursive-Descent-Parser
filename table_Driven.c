@@ -146,6 +146,9 @@ void ProgramTD(list* tokens) {
             token expansion[5] = {0, 0, 0, 0, 0};
             memcpy(expansion, Productions[prod], 5*sizeof(int));
 
+            printf("%s ( \n", string_from_token(currentNonT));
+
+
             // For each element in that expansion (they all end with t_none), push it onto the stack
             int i = 0;
             token temp = expansion[0];
