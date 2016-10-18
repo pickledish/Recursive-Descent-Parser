@@ -57,6 +57,12 @@ int evaluateExpression(char* exp){
 
 
 int evaluateParseTree(TREE tree){
+    if(tree->value=="S"){
+        return evaluateParseTree(tree->leftmostChild);
+    }
+    if(tree->value=="D"){
+
+    }
     if(tree->value == "E"){
         int leftHalf = evaluateParseTree(tree->leftmostChild);
         int rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
@@ -68,11 +74,41 @@ int evaluateParseTree(TREE tree){
             int leftHalf = evaluateParseTree(tree->leftmostChild);
             int rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
             int result = leftHalf*rightHalf;
+            return result;
         }
     }
     if(tree->value == "FT"){
         int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
         int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
+        int result = firstRightHalf*secondRightHalf;
+        if(tree->leftmostChild->leftmostChild->value=="*"){
+            return result;
+        }
+        if(tree->leftmostChild->leftmostChild->value=="/"){
+            result = 1/result;
+            return result;
+        }
+    }
+    if(tree->value == "TT"){
+        int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+        int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
+        int result = firstRightHalf + secondRightHalf;
+        if(tree->leftmostChild->leftmostChild->value=="+"){
+            return result;
+        }
+        else if(tree->leftmostChild->leftmostChild->value == "-"){
+            return (0 - result);
+        }
+    }
+    if(tree->value == "F"){
+        if(tree->leftmostChild->value == "("){
+            int expressionVal = evaluateParseTree(tree->leftmostChild->rightSibling);
+            return expressionVal;
+        }
+        else{
+            int result = atoi(tree->leftmostChild->value);
+            return result;
+        }
     }
 }
 
