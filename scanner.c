@@ -4,14 +4,6 @@
 #include <ctype.h>
 #include "scanner.h"
 
-int isNumber(char* s) {
-    if (*s == 0 || *s == 1 || s[0] == 2 || s[0] == 3 || s[0] == 4 || s[0] == 5 || s[0] == 6) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 token tokenize(char* t) {
     if (strcmp(t, "+") == 0) { return t_add; }
     else if (strcmp(t, "-") == 0) { return t_sub; }
@@ -64,7 +56,7 @@ int main()
 
         current->type = NULL;
 
-		ProgramTD(tokens);
+		Program(tokens);
 
 		input: printf("\n\nPlease enter another statement (q to quit): ");
 		scanf(" %[^\n]", input);
