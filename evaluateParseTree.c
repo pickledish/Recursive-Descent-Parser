@@ -61,7 +61,7 @@ int evaluateParseTree(TREE tree){
         return evaluateParseTree(tree->leftmostChild);
     }
     if(tree->value=="D"){
-
+        return evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling->rightSibling);
     }
     if(tree->value == "E"){
         int leftHalf = evaluateParseTree(tree->leftmostChild);
