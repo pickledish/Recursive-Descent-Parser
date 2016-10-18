@@ -150,6 +150,14 @@ void ProgramTD(list* tokens) {
             int i = 0;
             token temp = expansion[0];
             while (temp != t_none) {
+
+                TREE node = (TREE) malloc(sizeof(TREE));
+                char* name = (char*) malloc(sizeof(char));
+                strcpy(name, string_from_token(temp));
+                node->value = name;
+
+                
+
                 stack* pushed = (stack*) malloc(sizeof(stack));
                 pushed->type = temp;
                 pushed->prev = currentStack;

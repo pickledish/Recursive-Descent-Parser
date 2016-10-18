@@ -14,22 +14,22 @@ mo	->	*  |  /
 
 Numbers and Predict Sets:
 
-0 	P → SL $$      	let, (, id, literal, $$
-1 	SL → S SL      	let, (, id, literal
-2 	SL → ε         	$$
-3 	S → D          	let
-4 	S → E          	(, id, literal
-5 	D → let id := E	let
-6 	E → T TT       	(, id, literal
-7 	T → F FT       	(, id, literal
-8 	F → ( E )      	(
-9 	F → id         	id
-10	F → literal    	literal
-11	TT → ao T TT   	+, -
-12	TT → ε         	), let, (, id, literal, $$
-13	FT → mo F FT   	*, /
-14	FT → ε         	+, -, ), let, (, id, literal, $$
-15	ao → +         	+
-16	ao → -         	-
-17	mo → *         	*
-18	mo → /         	/
+0 	P → SL $$      		let, (, id, literal, $$
+1 	SL → S SL      		let, (, id, literal
+2 	SL → ε         		$$
+3 	S → D          		let
+4 	S → E          		(, id, literal
+5 	D → let id := E		let
+6 	E → T TT       		(, id, literal
+7 	T → F FT       		(, id, literal
+8 	F → ( E )      		(
+9 	F → id         		id
+10	F → literal    		literal
+11	TT → ao T TT   		+, -
+12	TT → ε         		), let, (, id, literal, $$
+13	FT → mo F FT   		*, /
+14	FT → ε         		+, -, ), let, (, id, literal, $$
+15	ao → +         		+
+16	ao → -         		-
+17	mo → *         		*
+18	mo → /         		/
