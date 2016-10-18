@@ -14,53 +14,51 @@
 #include <stdlib.h>
 #include <string.h>
 #include "scanner.h"
+#include <stdbool.h>
 
 
-char* getTreeExpression(TREE tree, char* exp){
+//char* getTreeExpression(TREE tree, char* exp){
+//    if(tree==NULL){
+//        return 0;
+//    }
+//    exp = strcat((getTreeExpression(tree->leftmostChild, exp)), exp);
+//    if(tree->leftmostChild==NULL){
+//        exp = strcat(tree->value, exp);
+//    }
+//    exp = strcat((getTreeExpression(tree->rightSibling, exp)), exp);
+//    return exp;
+//}
 
-    if(tree==NULL){
-        return 0;
+bool isOperator(char c) {
+    if (c == '+' || c == '-'
+        || c == '*' || c == '/'
+        || c == '^') {
+        return true;
     }
-    exp = strcat((getTreeExpression(tree->leftmostChild, exp)), exp);
-    if(tree->leftmostChild==NULL){
-        exp = strcat(tree->value, exp);
-    }
-    exp = strcat((getTreeExpression(tree->rightSibling, exp)), exp);
-    return exp;
-
+    return false;
 }
 
 int evaluateExpression(char* exp){
+    int result = 0;
+    //get the first "number"
     while(*exp!=NULL){
         char a = *exp;
         if(a!=" "){
-            //a is either a literal, a symbol or a bracket
-            switch(a){
-                //case (*):
+            //a is either a literal, a symbol or a bracket,
+           if(!isOperator(a)){
 
-            }
+           }
         }
     }
-}
-
-int evaluateParseTree(TREE tree){
-    char* exp = "";
-    exp = getTreeExpression(tree, exp);
-    int result = evaluateExpression(exp);
     return result;
 }
 
-//void printInorder(Node node)
-//{
-//    if (node == null)
-//        return;
-//
-//    /* first recur on left child */
-//    printInorder(node.left);
-//
-//    /* then print the data of node */
-//    System.out.print(node.key + " ");
-//
-//    /* now recur on right child */
-//    printInorder(node.right);
+
+
+
+//int evaluateParseTree(TREE tree){
+//    char* exp = "";
+//    exp = getTreeExpression(tree, exp);
+//    int result = evaluateExpression(exp);
+//    return result;
 //}
