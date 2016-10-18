@@ -64,7 +64,7 @@ int main()
 
         current->type = NULL;
 
-		ProgramTD(tokens);
+		Program(tokens);
 
 		input: printf("\n\nPlease enter another statement (q to quit): ");
 		scanf(" %[^\n]", input);

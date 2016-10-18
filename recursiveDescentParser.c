@@ -27,6 +27,37 @@ void printTree(TREE result);
 
 int failure = 0;
 
+//char* exp = "";
+
+char* getTreeExpression(TREE tree, char* exp){
+    if(tree==NULL){
+        return "";
+    }
+    if(tree->value==NULL){
+        return "";
+    }
+    if(tree->leftmostChild!=NULL){
+        exp = getTreeExpression(tree->leftmostChild, exp);
+    }
+    if(tree->leftmostChild==NULL){
+        if(exp==""){
+            exp = tree->value;
+        }
+        else{
+            strcat(exp, tree->value);
+        }
+        return exp;
+    }
+
+    if(tree->rightSibling!=NULL){
+        if(tree->rightSibling->value!=NULL){
+            exp = getTreeExpression(tree->rightSibling, exp);
+        }
+    }
+    return exp;
+}
+
+
 TREE Program(list* tokens2) {
 
     failure = 0;
@@ -34,6 +65,8 @@ TREE Program(list* tokens2) {
     tokens = tokens2;
 
     TREE result = statementList();
+    char* exp = getTreeExpression(result, "");
+    printf("%s", exp);
 
     if(result != NULL && !failure) {
         printTree(result);

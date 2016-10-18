@@ -58,7 +58,7 @@ list* currentToken;
 stack* currentStack;
 
 
-TREE match(token expected) {
+TREE matchTD(token expected) {
 
     if (expected == currentToken->type) {
 
@@ -171,7 +171,7 @@ void ProgramTD(list* tokens) {
 
             if (currentStack->type == currentToken->type) {
 
-                TREE leaf = match(currentStack->type);
+                TREE leaf = matchTD(currentStack->type);
 
             }
         }
