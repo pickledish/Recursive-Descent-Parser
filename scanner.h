@@ -35,4 +35,7 @@ char* string_from_token(token t);
 void ProgramTD(list* tokens);
 
 
+TREE findNode(TREE root, token desired);
+
+
 #endif //PROJECT_02_MAIN_H
