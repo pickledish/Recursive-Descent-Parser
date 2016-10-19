@@ -17,46 +17,11 @@
 #include <stdbool.h>
 
 
-//char* getTreeExpression(TREE tree, char* exp){
-//    if(tree==NULL){
-//        return 0;
-//    }
-//    exp = strcat((getTreeExpression(tree->leftmostChild, exp)), exp);
-//    if(tree->leftmostChild==NULL){
-//        exp = strcat(tree->value, exp);
-//    }
-//    exp = strcat((getTreeExpression(tree->rightSibling, exp)), exp);
-//    return exp;
-//}
-
-bool isOperator(char c) {
-    if (c == '+' || c == '-'
-        || c == '*' || c == '/'
-        || c == '^') {
-        return true;
-    }
-    return false;
-}
-
-int evaluateExpression(char* exp){
-    int result = 0;
-    //get the first "number"
-    while(*exp!=NULL){
-        char a = *exp;
-        if(a!=" "){
-            //a is either a literal, a symbol or a bracket,
-           if(!isOperator(a)){
-
-           }
-        }
-    }
-    return result;
-}
-
-
-
 
 int evaluateParseTree(TREE tree){
+    if(tree->value=="SL"){
+        return evaluateParseTree(tree->leftmostChild);
+    }
     if(tree->value=="S"){
         return evaluateParseTree(tree->leftmostChild);
     }
@@ -72,36 +37,51 @@ int evaluateParseTree(TREE tree){
     if(tree->value == "T"){
         if(tree->leftmostChild!=NULL){
             int leftHalf = evaluateParseTree(tree->leftmostChild);
-            int rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+            int rightHalf = 1;
+            if(tree->leftmostChild->rightSibling!=NULL && tree->leftmostChild->rightSibling->value!=NULL){
+                rightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+            }
             int result = leftHalf*rightHalf;
             return result;
         }
     }
     if(tree->value == "FT"){
-        int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
-        int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
-        int result = firstRightHalf*secondRightHalf;
-        if(tree->leftmostChild->leftmostChild->value=="*"){
-            return result;
+        int result = 1;
+        if(tree->leftmostChild!=NULL){
+            int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+            int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
+            result = firstRightHalf*secondRightHalf;
+            if(tree->leftmostChild->leftmostChild->value=="*"){
+                return result;
+            }
+            if(tree->leftmostChild->leftmostChild->value=="/"){
+                result = 1/result;
+                return result;
+            }
         }
-        if(tree->leftmostChild->leftmostChild->value=="/"){
-            result = 1/result;
-            return result;
-        }
+        return result;
     }
     if(tree->value == "TT"){
-        int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
-        int secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
-        int result = firstRightHalf + secondRightHalf;
-        if(tree->leftmostChild->leftmostChild->value=="+"){
-            return result;
+        int result = 0;
+        if(tree->leftmostChild!=NULL){
+            int firstRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling);
+            int secondRightHalf = 0;
+            if(tree->leftmostChild->rightSibling->rightSibling!=NULL){
+                secondRightHalf = evaluateParseTree(tree->leftmostChild->rightSibling->rightSibling);
+            }
+            result = firstRightHalf + secondRightHalf;
+            if(tree->leftmostChild->leftmostChild->value=="+"){
+                return result;
+            }
+            else if(tree->leftmostChild->leftmostChild->value == "-"){
+                return (0 - result);
+            }
         }
-        else if(tree->leftmostChild->leftmostChild->value == "-"){
-            return (0 - result);
-        }
+        return result;
     }
     if(tree->value == "F"){
-        if(tree->leftmostChild->value == "("){
+
+        if(tree->leftmostChild->value[0] == '('){
             int expressionVal = evaluateParseTree(tree->leftmostChild->rightSibling);
             return expressionVal;
         }
@@ -111,34 +91,6 @@ int evaluateParseTree(TREE tree){
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
