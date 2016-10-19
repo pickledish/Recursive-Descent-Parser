@@ -22,7 +22,7 @@ This file also contains a "match" function, which consumes a single token from t
 
 table_Driven.c
 
-The file also contains some useful methods, such as "string_from_token" to convert a token into its string representation, and "isProduction" to determine whether a token is a nonterminal (I misnamed it a little). Finally, we include a large table which shows 
+The file also contains some useful methods, such as "string_from_token" to convert a token into its string representation, and "isProduction" to determine whether a token is a nonterminal (I misnamed it a little). Finally, we include a large table which shows the predictions for each production depending on the symbol, which goes with an array of productions and their expansions. The ProgramTD part iteratively goes through each input token in the list, and wherever it predicts a production, it pushes all terminals/nonterminals from the RHS of the production onto the stack, and iteratively pops them off -- expanding and pushing nonterminals, and matching terminals with the input tokens.
 
 Running the project:
 
