@@ -22,6 +22,7 @@ TREE factor();
 TREE factorTail();
 TREE addOperation();
 
+
 void recursivePrint(TREE subtree, int indentLevel);
 void printTree(TREE result);
 
@@ -39,6 +40,7 @@ TREE Program(list* tokens2) {
 
     if(result != NULL && !failure) {
         printTree(result);
+        printf("\nParse Tree Evaluation   %d\n", val);
     }
 
     return result;
