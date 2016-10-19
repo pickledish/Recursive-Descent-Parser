@@ -34,6 +34,8 @@ char* string_from_token(token t);
 
 TREE ProgramTD(list* tokens);
 
+int evaluateParseTree(TREE tree);
+
 
 TREE findNode(TREE root, token desired);
 void printTree(TREE result);
