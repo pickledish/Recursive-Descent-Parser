@@ -14,7 +14,6 @@ token tokenize(char* t) {
     else if (strcmp(t, "$") == 0) { return t_eof; }
     else if (strcmp(t, "let") == 0) { return t_let; }
     else if (strcmp(t, ":=") == 0) { return t_gets; }
-    else if (strcmp(t, "\n") == 0) { return t_newline; }
     else {
         // printf(" Hello %d\n", isalpha(t[0]));
         if (isnumber(t[0]) != 0) {
